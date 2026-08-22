@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -40,9 +41,9 @@ export default function Hero() {
         transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
         className="flex flex-col sm:flex-row items-center gap-4"
       >
-        <button className="flex items-center justify-center gap-2 px-8 py-3.5 bg-white text-black font-sans font-medium rounded-full hover:scale-105 transition-transform duration-300">
+        <Link href="/dashboard" className="flex items-center justify-center gap-2 px-8 py-3.5 bg-white text-black font-sans font-medium rounded-full hover:scale-105 transition-transform duration-300">
           Start Extraction <ArrowRight className="w-4 h-4" />
-        </button>
+        </Link>
         <button className="px-8 py-3.5 bg-black/40 backdrop-blur-md text-white font-sans font-medium rounded-full border border-[#333] hover:bg-white/10 transition-colors duration-300">
           Read Documentation
         </button>

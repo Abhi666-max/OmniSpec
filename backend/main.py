@@ -3,6 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
 import os
+import time
+from services.ingestion import parse_pdf, parse_url
+from services.ai_engine import extract_product_specs, extract_demo_product
 
 app = FastAPI(title="OmniSpec AI Backend")
 
@@ -17,6 +20,9 @@ app.add_middleware(
 
 class URLRequest(BaseModel):
     url: str
+
+class DemoRequest(BaseModel):
+    product_hint: str
 
 @app.get("/")
 def read_root():
@@ -33,14 +39,22 @@ async def extract_pdf(file: UploadFile = File(...)):
     # Read file content
     content = await file.read()
     
-    # TODO: Implement PyMuPDF extraction
-    # TODO: Send text to Grok API
-    # TODO: Format response as Golden Record
+    start_time = time.time()
     
+    # Extract raw text using PyMuPDF
+    raw_text = parse_pdf(content)
+    
+    # Process through Grok API
+    golden_record = await extract_product_specs(raw_text)
+    
+    processing_time = round(time.time() - start_time, 2)
+    
+    # Feature 6: Golden Record Generation
     return {
         "status": "success",
         "filename": file.filename,
-        "message": "PDF parsed successfully. Grok integration pending."
+        "extraction_speed": f"{processing_time}s",
+        "golden_record": golden_record
     }
 
 @app.post("/api/extract/url")
@@ -48,13 +62,38 @@ async def extract_url(req: URLRequest):
     """
     Feature 1: URL Ingestion
     """
-    # TODO: Implement BeautifulSoup extraction
-    # TODO: Send text to Grok API
+    start_time = time.time()
+    
+    # Extract raw text from URL
+    raw_text = await parse_url(req.url)
+    
+    # Process through Grok API
+    golden_record = await extract_product_specs(raw_text)
+    
+    processing_time = round(time.time() - start_time, 2)
     
     return {
         "status": "success",
         "url": req.url,
-        "message": "URL parsed successfully. Grok integration pending."
+        "extraction_speed": f"{processing_time}s",
+        "golden_record": golden_record
+    }
+
+@app.post("/api/extract/demo")
+async def extract_demo(req: DemoRequest):
+    """
+    Feature: Bulk Processing Endpoint for Demo Catalog
+    """
+    start_time = time.time()
+    
+    golden_record = await extract_demo_product(req.product_hint)
+    
+    processing_time = round(time.time() - start_time, 2)
+    
+    return {
+        "status": "success",
+        "extraction_speed": f"{processing_time}s",
+        "golden_record": golden_record
     }
     
 if __name__ == "__main__":

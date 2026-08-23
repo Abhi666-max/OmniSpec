@@ -113,7 +113,7 @@ export default function Dashboard() {
   };
 
   return (
-    <main className="relative min-h-screen bg-black overflow-hidden selection:bg-white/20 selection:text-white cursor-none flex">
+    <main className="relative h-screen bg-black overflow-hidden selection:bg-white/20 selection:text-white cursor-none flex">
       <Cursor />
 
       {/* Background stays everywhere */}
@@ -125,7 +125,7 @@ export default function Dashboard() {
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {/* App Shell: Main Content Area */}
-      <div className="relative z-10 flex-1 ml-64 p-8 min-h-screen flex flex-col">
+      <div className="relative z-10 flex-1 ml-64 p-8 h-screen flex flex-col overflow-hidden">
 
         {/* Render Tab Content based on Sidebar selection */}
         {activeTab === "overview" && (
@@ -133,8 +133,8 @@ export default function Dashboard() {
         )}
 
         {activeTab === "catalog" && (
-          <div className="w-full h-full flex flex-col">
-            <div className="flex justify-between items-end mb-8 border-b border-[#222] pb-6">
+          <div className="w-full h-full flex flex-col overflow-hidden">
+            <div className="flex justify-between items-end mb-8 border-b border-[#222] pb-6 shrink-0">
               <div>
                 <h1 className="text-3xl font-sans font-medium text-white tracking-tight">Catalog Management</h1>
                 <p className="text-sm font-sans text-[#888] mt-2">Manage and enrich your raw supplier data into Golden Records.</p>
@@ -180,13 +180,13 @@ export default function Dashboard() {
         )}
 
         {activeTab === "validation" && (
-          <div className="w-full h-full flex flex-col">
-            <div className="mb-8">
+          <div className="w-full h-full flex flex-col overflow-hidden">
+            <div className="mb-8 shrink-0">
               <h1 className="text-3xl font-sans font-medium text-white tracking-tight">AI Validation Rules (Manual)</h1>
               <p className="text-sm font-sans text-[#888] mt-2">Manually drop a single PDF or URL to validate the pipeline extraction.</p>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 flex-1">
-              <div className="lg:col-span-4 h-full flex flex-col">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 flex-1 min-h-0">
+              <div className="lg:col-span-4 h-full flex flex-col min-h-0">
                 <Dropzone onResult={(data) => {
                   setGoldenRecord(data.golden_record);
                   setSpeed(data.extraction_speed);

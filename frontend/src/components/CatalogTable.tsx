@@ -1,13 +1,13 @@
 "use client";
 import { motion } from "framer-motion";
-import { CheckCircle2, CircleDashed, ChevronRight, FileText } from "lucide-react";
+import { CheckCircle2, CircleDashed, ChevronRight, FileText, XCircle } from "lucide-react";
 
 export interface CatalogItem {
   id: string;
   name: string;
   source_type: "PDF" | "URL";
   source_url: string;
-  status: "Pending" | "Processing" | "Enriched" | "Needs Review" | "Approved";
+  status: "Pending" | "Processing" | "Enriched" | "Needs Review" | "Approved" | "Rejected";
   goldenRecord?: Record<string, unknown>;
   speed?: string;
 }
@@ -88,6 +88,12 @@ export default function CatalogTable({ items, onItemClick, selectedId }: Catalog
                         <>
                           <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                           <span className="text-emerald-500 font-medium">Approved</span>
+                        </>
+                      )}
+                      {item.status === "Rejected" && (
+                        <>
+                          <XCircle className="w-4 h-4 text-red-500" />
+                          <span className="text-red-500 font-medium">Rejected</span>
                         </>
                       )}
                     </div>

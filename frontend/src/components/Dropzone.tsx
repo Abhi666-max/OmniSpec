@@ -15,6 +15,7 @@ export default function Dropzone({ onResult }: DropzoneProps) {
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const file = e.target.files?.[0];
+    e.target.value = ''; // Reset input to allow re-uploading the same file
     if (!file) return;
 
     setIsProcessing(true);

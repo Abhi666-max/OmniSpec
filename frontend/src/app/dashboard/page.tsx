@@ -105,6 +105,13 @@ export default function Dashboard() {
     setSelectedItem(prev => prev?.id === id ? { ...prev, status: "Approved" } : prev);
   };
 
+  const handleReject = (id: string) => {
+    setCatalog(prev => prev.map(item => 
+      item.id === id ? { ...item, status: "Rejected" } : item
+    ));
+    setSelectedItem(prev => prev?.id === id ? { ...prev, status: "Rejected" } : prev);
+  };
+
   return (
     <main className="relative min-h-screen bg-black overflow-hidden selection:bg-white/20 selection:text-white cursor-none flex">
       <Cursor />
@@ -166,7 +173,7 @@ export default function Dashboard() {
                 />
               </div>
               <div className="lg:col-span-5 h-full overflow-hidden">
-                <EnrichmentPanel item={selectedItem} onApprove={handleApprove} />
+                <EnrichmentPanel item={selectedItem} onApprove={handleApprove} onReject={handleReject} />
               </div>
             </div>
           </div>
@@ -185,8 +192,29 @@ export default function Dashboard() {
                   setSpeed(data.extraction_speed);
                 }} />
               </div>
-              <div className="lg:col-span-8 flex flex-col gap-8 h-full">
+              <div className="lg:col-span-8 flex flex-col gap-8 h-full overflow-y-auto custom-scrollbar pr-2">
                 <BentoGrid goldenRecord={goldenRecord} speed={speed} />
+                
+                {goldenRecord && (
+                  <div className="w-full min-h-[300px] bg-[#0A0A0A] border border-[#222] rounded-2xl overflow-hidden flex flex-col mb-8">
+                    <div className="px-6 py-4 border-b border-[#222] flex justify-between items-center bg-[#050505]">
+                      <div className="flex gap-2">
+                        <div className="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/50"></div>
+                        <div className="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/50"></div>
+                        <div className="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/50"></div>
+                      </div>
+                      <span className="text-xs uppercase tracking-widest text-[#888] font-sans">golden_record.json</span>
+                    </div>
+                    <div className="p-6 overflow-auto flex-1">
+                      <pre className="text-sm text-[#A1A1AA] font-mono leading-relaxed whitespace-pre-wrap break-words">
+                        <span className="text-pink-400">{`{`}</span>{"\n"}
+                        <span className="text-blue-400">  &quot;status&quot;</span>: <span className="text-green-400">&quot;Verified&quot;</span>,{"\n"}
+                        <span className="text-blue-400">  &quot;data&quot;</span>: {JSON.stringify(goldenRecord, null, 4).replace(/^{/, '').replace(/}$/, '')}
+                        <span className="text-pink-400">{`}`}</span>
+                      </pre>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

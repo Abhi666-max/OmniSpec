@@ -8,9 +8,10 @@ import { Check, X, FileSearch } from "lucide-react";
 interface EnrichmentPanelProps {
   item: CatalogItem | null;
   onApprove?: (id: string) => void;
+  onReject?: (id: string) => void;
 }
 
-export default function EnrichmentPanel({ item, onApprove }: EnrichmentPanelProps) {
+export default function EnrichmentPanel({ item, onApprove, onReject }: EnrichmentPanelProps) {
   const [showSource, setShowSource] = useState(false);
   if (!item) {
     return (
@@ -62,7 +63,10 @@ export default function EnrichmentPanel({ item, onApprove }: EnrichmentPanelProp
                   <p className="text-yellow-500/70 text-xs mt-1">Confidence score is below 95%. Please verify.</p>
                 </div>
                 <div className="flex gap-2">
-                  <button className="p-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 rounded-lg transition-colors">
+                  <button 
+                    onClick={() => onReject && onReject(item.id)}
+                    className="p-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 rounded-lg transition-colors"
+                  >
                     <X className="w-4 h-4" />
                   </button>
                   <button 
@@ -114,6 +118,42 @@ export default function EnrichmentPanel({ item, onApprove }: EnrichmentPanelProp
             )}
 
             <BentoGrid goldenRecord={item.goldenRecord} speed={item.speed} compact={true} />
+            
+            <div className="flex flex-col gap-4 p-5 bg-[#0A0A0A] border border-[#222] rounded-2xl relative overflow-hidden">
+              <div className="absolute left-[29px] top-12 bottom-8 w-px bg-[#333]"></div>
+              <h3 className="text-sm font-sans tracking-wide uppercase text-white mb-2">Audit Trail / Lineage</h3>
+              
+              <div className="flex items-start gap-4 relative z-10">
+                <div className="mt-1 w-3 h-3 rounded-full bg-[#444] border-2 border-black"></div>
+                <div>
+                  <p className="text-xs font-medium text-white">Data Ingested</p>
+                  <p className="text-[10px] font-mono text-[#666] uppercase mt-0.5">Source: {item.source_type}</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4 relative z-10">
+                <div className="mt-1 w-3 h-3 rounded-full bg-[#444] border-2 border-black"></div>
+                <div>
+                  <p className="text-xs font-medium text-white">Parsed by PyMuPDF Engine</p>
+                  <p className="text-[10px] font-mono text-[#666] uppercase mt-0.5">Time: ~0.02s</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4 relative z-10">
+                <div className="mt-1 w-3 h-3 rounded-full bg-blue-500 border-2 border-black"></div>
+                <div>
+                  <p className="text-xs font-medium text-blue-400">Extracted via Grok (LLaMA 3)</p>
+                  <p className="text-[10px] font-mono text-[#666] uppercase mt-0.5">Speed: {item.speed}</p>
+                </div>
+              </div>
+              {(item.status === "Approved" || item.status === "Rejected") && (
+                <div className="flex items-start gap-4 relative z-10">
+                  <div className={`mt-1 w-3 h-3 rounded-full border-2 border-black ${item.status === "Approved" ? "bg-green-500" : "bg-red-500"}`}></div>
+                  <div>
+                    <p className={`text-xs font-medium ${item.status === "Approved" ? "text-green-500" : "text-red-500"}`}>Human {item.status}</p>
+                    <p className="text-[10px] font-mono text-[#666] uppercase mt-0.5">Role: Data Steward</p>
+                  </div>
+                </div>
+              )}
+            </div>
             
             <div className="flex-1 min-h-[300px] bg-[#0A0A0A] border border-[#222] rounded-2xl overflow-hidden flex flex-col">
               <div className="px-6 py-4 border-b border-[#222] flex justify-between items-center bg-[#050505]">

@@ -186,7 +186,7 @@ export default function Dashboard() {
                       animate={{ scale: 1, opacity: 1, y: 0 }}
                       exit={{ scale: 0.95, opacity: 0, y: 20 }}
                       onClick={(e) => e.stopPropagation()}
-                      className="bg-[#050505] border border-[#222] rounded-3xl w-full max-w-5xl max-h-full shadow-2xl flex flex-col relative overflow-hidden"
+                      className="bg-[#050505] border border-[#222] rounded-3xl w-full max-w-5xl max-h-[90vh] shadow-2xl flex flex-col relative overflow-hidden"
                     >
                       <div className="absolute top-6 right-6 z-50">
                         <button 
@@ -197,7 +197,7 @@ export default function Dashboard() {
                         </button>
                       </div>
                       
-                      <div className="flex-1 overflow-hidden p-6 md:p-10">
+                      <div className="flex-1 min-h-0 overflow-hidden p-6 md:p-10 flex flex-col">
                         <EnrichmentPanel item={selectedItem} onApprove={(id) => { handleApprove(id); setSelectedItem(null); }} onReject={(id) => { handleReject(id); setSelectedItem(null); }} />
                       </div>
                     </motion.div>

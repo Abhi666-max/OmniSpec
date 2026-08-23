@@ -1,4 +1,4 @@
-import fitz  # PyMuPDF
+import pymupdf
 from bs4 import BeautifulSoup
 import httpx
 import io
@@ -8,7 +8,7 @@ def parse_pdf(file_bytes: bytes) -> str:
     Extracts raw text from a PDF document using PyMuPDF.
     """
     text = ""
-    with fitz.open(stream=file_bytes, filetype="pdf") as doc:
+    with pymupdf.open(stream=file_bytes, filetype="pdf") as doc:
         for page in doc:
             text += page.get_text("text") + "\n"
     return text.strip()

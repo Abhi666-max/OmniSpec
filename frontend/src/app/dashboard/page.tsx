@@ -1,5 +1,5 @@
 "use client";
-import AuroraBackground from "@/components/AuroraBackground";
+import JarvisBackground from "@/components/JarvisBackground";
 import Cursor from "@/components/Cursor";
 import Sidebar from "@/components/Sidebar";
 import DashboardOverview from "@/components/DashboardOverview";
@@ -114,12 +114,12 @@ export default function Dashboard() {
   };
 
   return (
-    <main className="relative h-screen bg-black overflow-hidden selection:bg-white/20 selection:text-white cursor-none flex">
+    <main className="relative h-screen bg-[#F8FAFC] overflow-hidden selection:bg-[#0284C7]/20 selection:text-[#0F172A] cursor-none flex">
       <Cursor />
 
       {/* Background stays everywhere */}
-      <div className="fixed inset-0 z-0">
-        <AuroraBackground />
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <JarvisBackground />
       </div>
 
       {/* App Shell: Left Sidebar */}
@@ -137,28 +137,28 @@ export default function Dashboard() {
           <div className="w-full h-full flex flex-col overflow-hidden">
             <div className="flex justify-between items-end mb-8 border-b border-[#222] pb-6 shrink-0">
               <div>
-                <h1 className="text-3xl font-sans font-medium text-white tracking-tight">Catalog Management</h1>
-                <p className="text-sm font-sans text-[#888] mt-2">Manage and enrich your raw supplier data into Golden Records.</p>
+                <h1 className="text-3xl font-sans font-bold text-[#0F172A] tracking-tight">Catalog Management</h1>
+                <p className="text-sm font-sans text-[#0F172A]/70 mt-2 font-semibold">Manage and enrich your raw supplier data into Golden Records.</p>
               </div>
 
               <div className="flex items-center gap-4">
                 <button
                   onClick={exportToCSV}
-                  className="flex items-center gap-2 border border-[#333] text-white px-6 py-3 rounded-full font-sans font-medium text-sm hover:bg-white/5 transition-colors"
+                  className="flex items-center gap-2 border border-[#0284C7]/30 text-[#0F172A] px-6 py-3 rounded-full font-sans font-bold text-sm hover:bg-[#0284C7]/10 transition-colors"
                 >
-                  <Download className="w-4 h-4 text-[#888]" />
+                  <Download className="w-4 h-4 text-[#0284C7]" />
                   Export CSV
                 </button>
 
                 <button
                   onClick={handleBulkEnrichment}
                   disabled={isEnriching}
-                  className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full font-sans font-medium text-sm hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100"
+                  className="flex items-center gap-2 bg-[#0284C7] text-white px-6 py-3 rounded-full font-sans font-bold text-sm hover:bg-[#0369A1] transition-colors disabled:opacity-50"
                 >
                   {isEnriching ? (
-                    <div className="w-4 h-4 border-2 border-black/20 border-t-black rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
                   ) : (
-                    <Play className="w-4 h-4 fill-black" />
+                    <Play className="w-4 h-4 fill-white" />
                   )}
                   Run Bulk Enrichment
                 </button>
@@ -178,7 +178,7 @@ export default function Dashboard() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4 md:p-8"
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-md p-4 md:p-8"
                     onClick={() => setSelectedItem(null)}
                   >
                     <motion.div 
@@ -186,12 +186,12 @@ export default function Dashboard() {
                       animate={{ scale: 1, opacity: 1, y: 0 }}
                       exit={{ scale: 0.95, opacity: 0, y: 20 }}
                       onClick={(e) => e.stopPropagation()}
-                      className="bg-[#050505] border border-[#222] rounded-3xl w-full max-w-5xl max-h-[90vh] shadow-2xl flex flex-col relative overflow-hidden"
+                      className="bg-white border border-[#0284C7]/20 rounded-3xl w-full max-w-5xl max-h-[90vh] shadow-[0_4px_30px_rgba(2,132,199,0.1)] flex flex-col relative overflow-hidden"
                     >
                       <div className="absolute top-6 right-6 z-50">
                         <button 
                           onClick={() => setSelectedItem(null)}
-                          className="p-2 bg-white/5 hover:bg-white/10 rounded-full text-[#888] hover:text-white transition-colors"
+                          className="p-2 bg-[#0284C7]/5 hover:bg-[#0284C7]/10 rounded-full text-[#0F172A]/70 hover:text-[#0284C7] transition-colors"
                         >
                           <X className="w-5 h-5" />
                         </button>
@@ -211,8 +211,8 @@ export default function Dashboard() {
         {activeTab === "validation" && (
           <div className="w-full h-full flex flex-col overflow-hidden">
             <div className="mb-8 shrink-0">
-              <h1 className="text-3xl font-sans font-medium text-white tracking-tight">AI Validation Rules (Manual)</h1>
-              <p className="text-sm font-sans text-[#888] mt-2">Manually drop a single PDF or URL to validate the pipeline extraction.</p>
+              <h1 className="text-3xl font-sans font-bold text-[#0F172A] tracking-tight">AI Validation Rules (Manual)</h1>
+              <p className="text-sm font-sans text-[#0F172A]/70 mt-2 font-semibold">Manually drop a single PDF or URL to validate the pipeline extraction.</p>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 flex-1 min-h-0">
               <div className="lg:col-span-4 h-full flex flex-col min-h-0">
@@ -225,21 +225,21 @@ export default function Dashboard() {
                 <BentoGrid goldenRecord={goldenRecord} speed={speed} />
                 
                 {goldenRecord && (
-                  <div className="w-full min-h-[300px] bg-[#0A0A0A] border border-[#222] rounded-2xl overflow-hidden flex flex-col mb-8">
-                    <div className="px-6 py-4 border-b border-[#222] flex justify-between items-center bg-[#050505]">
+                  <div className="w-full min-h-[300px] bg-white border border-[#0284C7]/20 rounded-2xl overflow-hidden flex flex-col mb-8 shadow-[0_4px_30px_rgba(2,132,199,0.05)]">
+                    <div className="px-6 py-4 border-b border-[#0284C7]/20 flex justify-between items-center bg-[#F8FAFC]">
                       <div className="flex gap-2">
                         <div className="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/50"></div>
-                        <div className="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/50"></div>
-                        <div className="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/50"></div>
+                        <div className="w-3 h-3 rounded-full bg-[#EA580C]/20 border border-[#EA580C]/50"></div>
+                        <div className="w-3 h-3 rounded-full bg-[#0284C7]/20 border border-[#0284C7]/50"></div>
                       </div>
-                      <span className="text-xs uppercase tracking-widest text-[#888] font-sans">golden_record.json</span>
+                      <span className="text-xs uppercase tracking-widest text-[#0284C7] font-sans font-bold">golden_record.json</span>
                     </div>
                     <div className="p-6 overflow-auto flex-1">
-                      <pre className="text-sm text-[#A1A1AA] font-mono leading-relaxed whitespace-pre-wrap break-words">
-                        <span className="text-pink-400">{`{`}</span>{"\n"}
-                        <span className="text-blue-400">  &quot;status&quot;</span>: <span className="text-green-400">&quot;Verified&quot;</span>,{"\n"}
-                        <span className="text-blue-400">  &quot;data&quot;</span>: {JSON.stringify(goldenRecord, null, 4).replace(/^{/, '').replace(/}$/, '')}
-                        <span className="text-pink-400">{`}`}</span>
+                      <pre className="text-sm text-[#0F172A] font-mono leading-relaxed whitespace-pre-wrap break-words font-semibold">
+                        <span className="text-pink-600">{`{`}</span>{"\n"}
+                        <span className="text-[#0284C7]">  &quot;status&quot;</span>: <span className="text-[#EA580C]">&quot;Verified&quot;</span>,{"\n"}
+                        <span className="text-[#0284C7]">  &quot;data&quot;</span>: {JSON.stringify(goldenRecord, null, 4).replace(/^{/, '').replace(/}$/, '')}
+                        <span className="text-pink-600">{`}`}</span>
                       </pre>
                     </div>
                   </div>

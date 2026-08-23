@@ -4,8 +4,8 @@ import { Points, PointMaterial } from "@react-three/drei";
 import * as random from "maath/random/dist/maath-random.esm";
 import { useState, useRef, Suspense } from "react";
 
-function StarSphere(props: any) {
-  const ref = useRef<any>(null);
+function StarSphere(props: unknown) {
+  const ref = useRef<unknown>(null);
   const [sphere] = useState(() => random.inSphere(new Float32Array(5000), { radius: 1.5 }));
 
   useFrame((state, delta) => {

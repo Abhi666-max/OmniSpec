@@ -12,30 +12,30 @@ const defaultItems = [
   {
     title: "Triangulation Status",
     description: "Cross-referencing URL, PDF, and DB.",
-    icon: <ShieldCheck className="w-5 h-5 text-white" />,
+    icon: <ShieldCheck className="w-5 h-5 text-[#0284C7]" />,
     colSpan: "col-span-1 md:col-span-2",
-    value: "Verified Match",
+    value: "Awaiting Data",
   },
   {
     title: "Extraction Speed",
     description: "Average parsing time per document.",
-    icon: <Zap className="w-5 h-5 text-[#888]" />,
+    icon: <Zap className="w-5 h-5 text-[#0284C7]/60" />,
     colSpan: "col-span-1",
-    value: "1.24s",
+    value: "--",
   },
   {
     title: "Taxonomy Mapping",
     description: "Auto-classified via UNSPSC.",
-    icon: <FileText className="w-5 h-5 text-[#888]" />,
+    icon: <FileText className="w-5 h-5 text-[#0284C7]/60" />,
     colSpan: "col-span-1",
-    value: "Fasteners",
+    value: "Pending",
   },
   {
     title: "AI Confidence Score",
     description: "Self-evaluated extraction precision.",
-    icon: <BarChart3 className="w-5 h-5 text-white" />,
+    icon: <BarChart3 className="w-5 h-5 text-[#EA580C]" />,
     colSpan: "col-span-1 md:col-span-2",
-    value: "98.5%",
+    value: "--",
   },
 ];
 
@@ -63,28 +63,28 @@ export default function BentoGrid({ goldenRecord, speed, compact = false }: Bent
     {
       title: "Triangulation Status",
       description: "Cross-referencing URL, PDF, and DB.",
-      icon: <ShieldCheck className="w-5 h-5 text-white" />,
+      icon: <ShieldCheck className="w-5 h-5 text-[#0284C7]" />,
       colSpan: compact ? "col-span-1 sm:col-span-2" : "col-span-1 md:col-span-2",
       value: (goldenRecord.triangulation_status as string) || "Verified Match",
     },
     {
       title: "Extraction Speed",
       description: "Average parsing time per document.",
-      icon: <Zap className="w-5 h-5 text-[#888]" />,
+      icon: <Zap className="w-5 h-5 text-[#0284C7]/60" />,
       colSpan: "col-span-1",
       value: speed || "0.0s",
     },
     {
       title: "Taxonomy Mapping",
       description: "Auto-classified via UNSPSC.",
-      icon: <FileText className="w-5 h-5 text-[#888]" />,
+      icon: <FileText className="w-5 h-5 text-[#0284C7]/60" />,
       colSpan: "col-span-1",
       value: goldenRecord.taxonomy_unspsc || "Pending",
     },
     {
       title: "AI Confidence Score",
       description: "Self-evaluated extraction precision.",
-      icon: <BarChart3 className="w-5 h-5 text-white" />,
+      icon: <BarChart3 className="w-5 h-5 text-[#EA580C]" />,
       colSpan: compact ? "col-span-1 sm:col-span-2" : "col-span-1 md:col-span-2",
       value: `${goldenRecord.confidence_score}%` || "0%",
     },
@@ -100,13 +100,13 @@ export default function BentoGrid({ goldenRecord, speed, compact = false }: Bent
         className="flex items-center justify-between mb-6"
       >
         <div>
-          <h2 className="text-2xl font-sans font-medium tracking-tight text-white mb-1">
-            Golden Record Analytics
+          <h2 className="text-xl font-heading font-bold tracking-widest uppercase text-[#0F172A] mb-1 typewriter-text">
+            [ Golden Record Analytics ]
           </h2>
-          <p className="text-[#888] text-xs uppercase tracking-widest font-sans">Real-time structured intelligence</p>
+          <p className="text-[#0284C7]/80 text-[10px] uppercase tracking-[0.2em] font-heading font-bold typewriter-text">Real-time structured intelligence</p>
         </div>
-        <button className="text-xs uppercase tracking-widest font-sans text-[#888] hover:text-white flex items-center gap-1 transition-colors">
-          View Raw Logs <ChevronRight className="w-4 h-4" />
+        <button className="text-[10px] uppercase tracking-[0.2em] font-heading text-[#0284C7]/80 hover:text-[#0284C7] font-bold flex items-center gap-1 transition-colors">
+          View Raw Logs <ChevronRight className="w-3 h-3" />
         </button>
       </motion.div>
 
@@ -122,19 +122,19 @@ export default function BentoGrid({ goldenRecord, speed, compact = false }: Bent
             key={i}
             variants={itemVariants}
             whileHover={{ scale: 1.02 }}
-            className={`p-6 rounded-2xl border border-[#222] bg-black/40 backdrop-blur-xl transition-all duration-300 relative overflow-hidden group hover:bg-white/5 hover:border-[#444] flex flex-col justify-between min-h-[160px] ${item.colSpan}`}
+            className={`p-6 sci-fi-box hud-border bg-white/90 backdrop-blur-xl transition-all duration-300 relative overflow-hidden group hover:bg-[#0284C7]/5 hover:border-[#0284C7] hover:shadow-[0_0_20px_rgba(2,132,199,0.2)] flex flex-col justify-between min-h-[160px] shadow-[0_4px_20px_rgba(2,132,199,0.05)] ${item.colSpan}`}
           >
             <div className="flex items-start justify-between mb-4 relative z-10">
-              <div className="p-3 bg-black rounded-full border border-[#333]">
+              <div className="p-3 bg-white rounded-full border border-[#0284C7]/30 group-hover:border-[#0284C7]/60 group-hover:shadow-[0_0_15px_rgba(2,132,199,0.3)] transition-all">
                 {item.icon}
               </div>
             </div>
             
             <div className="relative z-10 mt-auto">
-              <p className={`font-mono tracking-tighter mb-1 text-white truncate ${String(item.value).length > 12 ? 'text-xl' : String(item.value).length > 8 ? 'text-2xl' : 'text-4xl md:text-5xl'}`}>
+              <p className={`font-heading font-bold tracking-widest uppercase mb-1 text-[#0284C7] truncate transition-all typewriter-text ${String(item.value).length > 12 ? 'text-xl' : String(item.value).length > 8 ? 'text-2xl' : 'text-3xl md:text-4xl'}`}>
                 {item.value}
               </p>
-              <h3 className="text-[10px] uppercase tracking-widest font-sans text-[#888]">{item.title}</h3>
+              <h3 className="text-[10px] uppercase tracking-[0.2em] font-heading font-bold text-[#0F172A]/70 typewriter-text">{item.title}</h3>
             </div>
           </motion.div>
         ))}

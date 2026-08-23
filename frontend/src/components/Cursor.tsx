@@ -20,13 +20,13 @@ export default function Cursor() {
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      const isClickable = 
+      const isClickable =
         target.tagName.toLowerCase() === "button" ||
         target.tagName.toLowerCase() === "a" ||
         target.closest("button") ||
         target.closest("a") ||
         window.getComputedStyle(target).cursor === "pointer";
-      
+
       setIsHovered(!!isClickable);
     };
 
@@ -35,10 +35,10 @@ export default function Cursor() {
       if (innerDotRef.current) {
         innerDotRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
       }
-      
-      ringX += (mouseX - ringX) * 0.2;
-      ringY += (mouseY - ringY) * 0.2;
-      
+
+      ringX += (mouseX - ringX) * 0.5;
+      ringY += (mouseY - ringY) * 0.5;
+
       if (outerRingRef.current) {
         outerRingRef.current.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
       }
@@ -48,7 +48,7 @@ export default function Cursor() {
 
     window.addEventListener("mousemove", moveCursor, { passive: true });
     window.addEventListener("mouseover", handleMouseOver, { passive: true });
-    
+
     frameId = requestAnimationFrame(render);
 
     return () => {
@@ -67,13 +67,15 @@ export default function Cursor() {
         style={{ willChange: "transform" }}
       >
         {/* Visual Element (Handles hover scaling smoothly) */}
-        <div 
-          className={`w-8 h-8 -ml-4 -mt-4 rounded-full border transition-all duration-150 ${
-            isHovered ? "scale-150 border-transparent" : "scale-100 border-white/40"
-          }`}
+        <div
+          className={`w-10 h-10 -ml-5 -mt-5 rounded-full border border-dashed transition-all duration-300 ${isHovered ? "scale-[1.2] border-[#00D2FF]/80 rotate-45" : "scale-100 border-[#00D2FF]/40 rotate-0"
+            }`}
         />
+        {/* Reticle Ticks */}
+        <div className={`absolute top-1/2 left-0 w-full h-[1px] bg-[#00D2FF]/30 -translate-y-1/2 transition-opacity ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
+        <div className={`absolute left-1/2 top-0 w-[1px] h-full bg-[#00D2FF]/30 -translate-x-1/2 transition-opacity ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
       </div>
-      
+
       {/* Inner Dot Tracker (No Transitions here) */}
       <div
         ref={innerDotRef}
@@ -81,10 +83,9 @@ export default function Cursor() {
         style={{ willChange: "transform" }}
       >
         {/* Visual Element (Handles hover scaling smoothly) */}
-        <div 
-          className={`w-2 h-2 -ml-1 -mt-1 bg-white rounded-full transition-all duration-150 ${
-            isHovered ? "scale-[4] opacity-30 mix-blend-difference" : "scale-100 opacity-100"
-          }`}
+        <div
+          className={`w-1.5 h-1.5 -ml-[3px] -mt-[3px] bg-[#00D2FF] rounded-sm transition-all duration-150 ${isHovered ? "scale-[2] shadow-[0_0_10px_#00D2FF]" : "scale-100 shadow-[0_0_5px_#00D2FF]"
+            }`}
         />
       </div>
     </>

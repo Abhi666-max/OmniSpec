@@ -1,35 +1,92 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-geist-sans), sans-serif;
-  --font-mono: var(--font-geist-mono), monospace;
+  --font-sans: "Rajdhani", sans-serif;
+  --font-heading: "Chakra Petch", sans-serif;
+  --font-mono: "Geist Mono", monospace;
 }
 
 :root {
-  --background: #000000;
-  --foreground: #FFFFFF;
+  --background: #F8FAFC;
+  --foreground: #0F172A;
+  --stark-blue: #0284C7;
+  --stark-gold: #EA580C;
 }
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: radial-gradient(circle at center, #F8FAFC 0%, #E2E8F0 100%);
+  background-size: cover;
+  background-attachment: fixed;
   overflow: hidden;
 }
 
-/* Custom Minimalist Scrollbar - macOS Style */
+/* Custom Minimalist Scrollbar - J.A.R.V.I.S Style */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(2, 132, 199, 0.05);
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 10px;
+  background: rgba(2, 132, 199, 0.3);
+  border-radius: 0px;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(2, 132, 199, 0.6);
+  box-shadow: 0 0 10px rgba(2, 132, 199, 0.5);
+}
+
+/* HUD Utility Classes */
+.hud-border {
+  border: 1px solid rgba(2, 132, 199, 0.2);
+  box-shadow: inset 0 0 15px rgba(2, 132, 199, 0.03);
+}
+.hud-border:hover {
+  border-color: rgba(2, 132, 199, 0.6);
+  box-shadow: 0 0 15px rgba(2, 132, 199, 0.1), inset 0 0 20px rgba(2, 132, 199, 0.05);
+}
+.hud-glow {
+  text-shadow: 0 0 8px rgba(2, 132, 199, 0.4);
+}
+.hud-gold-glow {
+  text-shadow: 0 0 8px rgba(234, 88, 12, 0.4);
+}
+
+/* 100% J.A.R.V.I.S Theme Additions */
+.sci-fi-box {
+  clip-path: polygon(
+    15px 0, 
+    100% 0, 
+    100% calc(100% - 15px), 
+    calc(100% - 15px) 100%, 
+    0 100%, 
+    0 15px
+  );
+  border-radius: 0 !important;
+}
+
+.typewriter-text {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 1s steps(40, end);
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes scan-laser {
+  0% { top: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.animate-scan-laser {
+  animation: scan-laser 4s linear infinite;
 }
 
 /* Force custom cursor everywhere - Brutal mode */

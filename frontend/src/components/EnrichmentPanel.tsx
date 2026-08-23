@@ -31,7 +31,7 @@ export default function EnrichmentPanel({ item, onApprove, onReject }: Enrichmen
         transition={{ duration: 0.3 }}
         className="h-full flex flex-col gap-6 overflow-y-auto pr-2 custom-scrollbar"
       >
-        <div className="flex items-center justify-between pb-4 border-b border-[#222]">
+        <div className="flex items-center justify-between pb-4 border-b border-[#222] shrink-0">
           <div>
             <h2 className="text-xl font-sans font-medium text-white mb-1">{item.name}</h2>
             <p className="text-xs font-mono text-[#888]">{item.source_url}</p>
@@ -91,7 +91,7 @@ export default function EnrichmentPanel({ item, onApprove, onReject }: Enrichmen
             </div>
 
             {showSource && (
-              <div className="p-4 bg-[#111] border border-[#222] rounded-xl text-sm text-[#888] font-mono leading-relaxed relative overflow-hidden group">
+              <div className="p-4 bg-[#111] border border-[#222] rounded-xl text-sm text-[#888] font-mono leading-relaxed relative overflow-hidden group shrink-0">
                 <div className="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <span className="text-[10px] uppercase tracking-widest text-[#555]">Source Snippet</span>
                 </div>
@@ -119,7 +119,7 @@ export default function EnrichmentPanel({ item, onApprove, onReject }: Enrichmen
 
             <BentoGrid goldenRecord={item.goldenRecord} speed={item.speed} compact={true} />
             
-            <div className="flex flex-col gap-4 p-5 bg-[#0A0A0A] border border-[#222] rounded-2xl relative overflow-hidden">
+            <div className="flex flex-col gap-4 p-5 bg-[#0A0A0A] border border-[#222] rounded-2xl relative overflow-hidden shrink-0">
               <div className="absolute left-[29px] top-12 bottom-8 w-px bg-[#333]"></div>
               <h3 className="text-sm font-sans tracking-wide uppercase text-white mb-2">Audit Trail / Lineage</h3>
               

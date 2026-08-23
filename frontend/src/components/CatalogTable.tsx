@@ -20,10 +20,10 @@ interface CatalogTableProps {
 
 export default function CatalogTable({ items, onItemClick, selectedId }: CatalogTableProps) {
   return (
-    <div className="w-full bg-[#0A0A0A] border border-[#222] rounded-2xl overflow-hidden shadow-2xl">
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm text-[#A1A1AA]">
-          <thead className="text-xs uppercase bg-[#050505] text-[#888] border-b border-[#222]">
+    <div className="w-full h-full flex flex-col bg-[#0A0A0A] border border-[#222] rounded-2xl overflow-hidden shadow-2xl">
+      <div className="flex-1 overflow-auto custom-scrollbar">
+        <table className="w-full text-left text-sm text-[#A1A1AA] relative">
+          <thead className="text-xs uppercase bg-[#050505] text-[#888] border-b border-[#222] sticky top-0 z-10 shadow-sm">
             <tr>
               <th className="px-6 py-4 font-medium tracking-widest">SKU Name</th>
               <th className="px-6 py-4 font-medium tracking-widest">Source</th>

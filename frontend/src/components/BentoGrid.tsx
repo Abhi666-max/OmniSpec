@@ -91,7 +91,7 @@ export default function BentoGrid({ goldenRecord, speed, compact = false }: Bent
   ] : defaultItems;
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -124,17 +124,17 @@ export default function BentoGrid({ goldenRecord, speed, compact = false }: Bent
             whileHover={{ scale: 1.02 }}
             className={`p-6 rounded-2xl border border-[#222] bg-black/40 backdrop-blur-xl transition-all duration-300 relative overflow-hidden group hover:bg-white/5 hover:border-[#444] ${item.colSpan}`}
           >
-            <div className="flex items-start justify-between mb-8 relative z-10">
+            <div className="flex items-start justify-between mb-4 relative z-10">
               <div className="p-3 bg-black rounded-full border border-[#333]">
                 {item.icon}
               </div>
             </div>
             
-            <div className="relative z-10">
-              <p className="text-4xl md:text-5xl font-mono tracking-tighter mb-3 text-white">
+            <div className="relative z-10 flex flex-col h-full justify-end">
+              <p className={`font-mono tracking-tighter mb-2 text-white truncate ${String(item.value).length > 8 ? 'text-2xl' : 'text-4xl md:text-5xl'}`}>
                 {item.value}
               </p>
-              <h3 className="text-xs uppercase tracking-widest font-sans text-[#888] mb-1">{item.title}</h3>
+              <h3 className="text-[10px] uppercase tracking-widest font-sans text-[#888]">{item.title}</h3>
             </div>
           </motion.div>
         ))}

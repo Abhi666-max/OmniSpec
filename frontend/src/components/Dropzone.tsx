@@ -27,7 +27,8 @@ export default function Dropzone({ onResult }: DropzoneProps) {
     formData.append("file", file);
 
     try {
-      const res = await fetch("http://localhost:8000/api/extract/pdf", {
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      const res = await fetch(`${API_BASE}/api/extract/pdf`, {
         method: "POST",
         body: formData,
       });
@@ -68,7 +69,8 @@ export default function Dropzone({ onResult }: DropzoneProps) {
     setFileName(url);
 
     try {
-      const res = await fetch("http://localhost:8000/api/extract/url", {
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      const res = await fetch(`${API_BASE}/api/extract/url`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

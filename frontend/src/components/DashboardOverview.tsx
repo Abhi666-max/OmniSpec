@@ -3,7 +3,7 @@ import { ShieldCheck, Zap, Database } from "lucide-react";
 
 export default function DashboardOverview() {
   return (
-    <div className="w-full h-full flex flex-col gap-8">
+    <div className="w-full h-full flex flex-col gap-8 overflow-y-auto custom-scrollbar pr-4 pb-12">
       <div>
         <h1 className="text-3xl font-sans font-medium text-white tracking-tight">Platform Overview</h1>
         <p className="text-sm font-sans text-[#888] mt-2">Real-time metrics for OmniSpec AI Product Intelligence.</p>

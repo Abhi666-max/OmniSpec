@@ -1,5 +1,4 @@
 "use client";
-import Header from "@/components/Header";
 import AuroraBackground from "@/components/AuroraBackground";
 import Cursor from "@/components/Cursor";
 import Sidebar from "@/components/Sidebar";
@@ -23,20 +22,20 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("overview");
   const [catalog, setCatalog] = useState<CatalogItem[]>(initialCatalog);
   const [selectedItem, setSelectedItem] = useState<CatalogItem | null>(null);
-  
+
   // For Manual Validation Tab
-  const [goldenRecord, setGoldenRecord] = useState<any>(null);
+  const [goldenRecord, setGoldenRecord] = useState<Record<string, unknown> | null>(null);
   const [speed, setSpeed] = useState<string>("0s");
 
   const [isEnriching, setIsEnriching] = useState(false);
 
   const handleBulkEnrichment = async () => {
     setIsEnriching(true);
-    
+
     // Process one by one for visual effect
     for (let i = 0; i < catalog.length; i++) {
       // 1. Set status to processing
-      setCatalog(prev => prev.map((item, idx) => 
+      setCatalog(prev => prev.map((item, idx) =>
         idx === i ? { ...item, status: "Processing" } : item
       ));
 
@@ -51,7 +50,7 @@ export default function Dashboard() {
           body: JSON.stringify({ product_hint: catalog[i].name }),
         });
         const data = await res.json();
-        
+
         // 3. Set status to Enriched with Golden Record
         const enrichedItem: CatalogItem = {
           ...catalog[i],
@@ -61,26 +60,26 @@ export default function Dashboard() {
         };
 
         setCatalog(prev => prev.map((item, idx) => idx === i ? enrichedItem : item));
-        
+
         // Update selected item to show the new data instantly
         setSelectedItem(prev => prev?.id === enrichedItem.id ? enrichedItem : prev);
-        
+
       } catch (error) {
         console.error(error);
         // Fallback on error
-        setCatalog(prev => prev.map((item, idx) => 
+        setCatalog(prev => prev.map((item, idx) =>
           idx === i ? { ...item, status: "Pending" } : item
         ));
       }
     }
-    
+
     setIsEnriching(false);
   };
 
   return (
     <main className="relative min-h-screen bg-black overflow-hidden selection:bg-white/20 selection:text-white cursor-none flex">
       <Cursor />
-      
+
       {/* Background stays everywhere */}
       <div className="fixed inset-0 z-0">
         <AuroraBackground />
@@ -88,10 +87,10 @@ export default function Dashboard() {
 
       {/* App Shell: Left Sidebar */}
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-      
+
       {/* App Shell: Main Content Area */}
       <div className="relative z-10 flex-1 ml-64 p-8 min-h-screen flex flex-col">
-        
+
         {/* Render Tab Content based on Sidebar selection */}
         {activeTab === "overview" && (
           <DashboardOverview />
@@ -104,8 +103,8 @@ export default function Dashboard() {
                 <h1 className="text-3xl font-sans font-medium text-white tracking-tight">Catalog Management</h1>
                 <p className="text-sm font-sans text-[#888] mt-2">Manage and enrich your raw supplier data into Golden Records.</p>
               </div>
-              
-              <button 
+
+              <button
                 onClick={handleBulkEnrichment}
                 disabled={isEnriching}
                 className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full font-sans font-medium text-sm hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100"
@@ -118,11 +117,11 @@ export default function Dashboard() {
                 Run Bulk Enrichment
               </button>
             </div>
-            
+
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 flex-1 h-[70vh]">
               <div className="lg:col-span-7 h-full">
-                <CatalogTable 
-                  items={catalog} 
+                <CatalogTable
+                  items={catalog}
                   onItemClick={(item) => setSelectedItem(item)}
                   selectedId={selectedItem?.id}
                 />

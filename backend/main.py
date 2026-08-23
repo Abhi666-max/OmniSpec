@@ -1,8 +1,7 @@
-from fastapi import FastAPI, File, UploadFile, Form, HTTPException
+from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
-import os
 import time
 from services.ingestion import parse_pdf, parse_url
 from services.ai_engine import extract_product_specs, extract_demo_product

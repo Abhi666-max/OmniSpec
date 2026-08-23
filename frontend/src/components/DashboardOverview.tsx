@@ -1,5 +1,4 @@
 "use client";
-import { motion } from "framer-motion";
 import { ShieldCheck, Zap, Database } from "lucide-react";
 
 export default function DashboardOverview() {

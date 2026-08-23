@@ -1,6 +1,6 @@
 "use client";
 import { Zap, ShieldCheck, FileText, BarChart3, ChevronRight } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 interface BentoGridProps {
   goldenRecord?: any;
@@ -38,7 +38,7 @@ const defaultItems = [
   },
 ];
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -46,7 +46,7 @@ const containerVariants = {
   }
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 30, scale: 0.95 },
   show: { 
     opacity: 1, 

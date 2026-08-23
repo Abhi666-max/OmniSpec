@@ -4,22 +4,21 @@ import { UploadCloud, FileType } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface DropzoneProps {
-  onResult?: (data: any) => void;
+  onResult?: (data: Record<string, unknown>) => void;
 }
 
 export default function Dropzone({ onResult }: DropzoneProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [result, setResult] = useState<any>(null);
   const [url, setUrl] = useState("");
 
-  const handleUpload = async (e: any) => {
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const file = e.target.files?.[0];
     if (!file) return;
 
     setIsProcessing(true);
-    
+
     const formData = new FormData();
     formData.append("file", file);
 
@@ -29,7 +28,6 @@ export default function Dropzone({ onResult }: DropzoneProps) {
         body: formData,
       });
       const data = await res.json();
-      setResult(data);
       if (onResult) {
         onResult(data);
       }
@@ -40,12 +38,12 @@ export default function Dropzone({ onResult }: DropzoneProps) {
     }
   };
 
-  const handleUrlSubmit = async (e: any) => {
+  const handleUrlSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!url) return;
 
     setIsProcessing(true);
-    
+
     try {
       const res = await fetch("http://localhost:8000/api/extract/url", {
         method: "POST",
@@ -55,7 +53,6 @@ export default function Dropzone({ onResult }: DropzoneProps) {
         body: JSON.stringify({ url }),
       });
       const data = await res.json();
-      setResult(data);
       if (onResult) {
         onResult(data);
       }
@@ -70,16 +67,16 @@ export default function Dropzone({ onResult }: DropzoneProps) {
     <div className="w-full h-full flex flex-col gap-4">
       {/* URL Input Section */}
       <form onSubmit={handleUrlSubmit} className="flex gap-2 w-full relative z-20">
-        <input 
-          type="url" 
-          placeholder="Paste Supplier URL here..." 
+        <input
+          type="url"
+          placeholder="Paste Supplier URL here..."
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           disabled={isProcessing}
           className="flex-1 bg-black/40 border border-[#333] rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#666] focus:outline-none focus:border-white transition-colors backdrop-blur-xl"
         />
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           disabled={isProcessing || !url}
           className="bg-white text-black px-6 py-3 rounded-xl font-medium text-sm hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100"
         >

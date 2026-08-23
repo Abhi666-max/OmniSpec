@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2, CircleDashed, ChevronRight, FileText } from "lucide-react";
 
@@ -9,7 +8,7 @@ export interface CatalogItem {
   source_type: "PDF" | "URL";
   source_url: string;
   status: "Pending" | "Processing" | "Enriched";
-  goldenRecord?: any;
+  goldenRecord?: Record<string, unknown>;
   speed?: string;
 }
 

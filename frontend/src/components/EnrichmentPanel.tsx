@@ -14,22 +14,12 @@ interface EnrichmentPanelProps {
 export default function EnrichmentPanel({ item, onApprove, onReject }: EnrichmentPanelProps) {
   const [showSource, setShowSource] = useState(false);
   if (!item) {
-    return (
-      <div className="h-full flex items-center justify-center border border-[#222] border-dashed rounded-2xl bg-[#0A0A0A]">
-        <p className="text-[#666] font-sans text-sm">Select a catalog item to view AI intelligence.</p>
-      </div>
-    );
+    return null;
   }
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={item.id}
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -20 }}
-        transition={{ duration: 0.3 }}
-        className="h-full flex flex-col gap-6 overflow-y-auto pr-2 custom-scrollbar"
+      <div
+        className="h-full flex flex-col gap-6 overflow-y-auto pr-4 custom-scrollbar"
       >
         <div className="flex items-center justify-between pb-4 border-b border-[#222] shrink-0">
           <div>
@@ -175,7 +165,6 @@ export default function EnrichmentPanel({ item, onApprove, onReject }: Enrichmen
             </div>
           </>
         )}
-      </motion.div>
-    </AnimatePresence>
+      </div>
   );
 }

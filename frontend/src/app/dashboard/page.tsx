@@ -8,7 +8,8 @@ import EnrichmentPanel from "@/components/EnrichmentPanel";
 import Dropzone from "@/components/Dropzone";
 import BentoGrid from "@/components/BentoGrid";
 import { useState } from "react";
-import { Play, Download } from "lucide-react";
+import { Play, Download, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const initialCatalog: CatalogItem[] = [
   { id: "1", name: "Centrifugal Water Pump CX-500", source_type: "URL", source_url: "supplier-a.com/cx-500", status: "Pending" },
@@ -164,17 +165,45 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 flex-1 min-h-0">
-              <div className="lg:col-span-7 h-full overflow-hidden">
-                <CatalogTable
-                  items={catalog}
-                  onItemClick={(item) => setSelectedItem(item)}
-                  selectedId={selectedItem?.id}
-                />
-              </div>
-              <div className="lg:col-span-5 h-full overflow-hidden">
-                <EnrichmentPanel item={selectedItem} onApprove={handleApprove} onReject={handleReject} />
-              </div>
+            <div className="flex-1 min-h-0 relative w-full h-full">
+              <CatalogTable
+                items={catalog}
+                onItemClick={(item) => setSelectedItem(item)}
+                selectedId={selectedItem?.id}
+              />
+              
+              <AnimatePresence>
+                {selectedItem && (
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4 md:p-8"
+                    onClick={() => setSelectedItem(null)}
+                  >
+                    <motion.div 
+                      initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                      animate={{ scale: 1, opacity: 1, y: 0 }}
+                      exit={{ scale: 0.95, opacity: 0, y: 20 }}
+                      onClick={(e) => e.stopPropagation()}
+                      className="bg-[#050505] border border-[#222] rounded-3xl w-full max-w-5xl max-h-full shadow-2xl flex flex-col relative overflow-hidden"
+                    >
+                      <div className="absolute top-6 right-6 z-50">
+                        <button 
+                          onClick={() => setSelectedItem(null)}
+                          className="p-2 bg-white/5 hover:bg-white/10 rounded-full text-[#888] hover:text-white transition-colors"
+                        >
+                          <X className="w-5 h-5" />
+                        </button>
+                      </div>
+                      
+                      <div className="flex-1 overflow-hidden p-6 md:p-10">
+                        <EnrichmentPanel item={selectedItem} onApprove={(id) => { handleApprove(id); setSelectedItem(null); }} onReject={(id) => { handleReject(id); setSelectedItem(null); }} />
+                      </div>
+                    </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         )}

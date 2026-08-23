@@ -23,7 +23,7 @@ export default function EnrichmentPanel({ item }: EnrichmentPanelProps) {
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: -20 }}
         transition={{ duration: 0.3 }}
-        className="h-full flex flex-col gap-6"
+        className="h-full flex flex-col gap-6 overflow-y-auto pr-2 custom-scrollbar"
       >
         <div className="flex items-center justify-between pb-4 border-b border-[#222]">
           <div>
@@ -50,7 +50,7 @@ export default function EnrichmentPanel({ item }: EnrichmentPanelProps) {
           </div>
         ) : (
           <>
-            <BentoGrid goldenRecord={item.goldenRecord} speed={item.speed} />
+            <BentoGrid goldenRecord={item.goldenRecord} speed={item.speed} compact={true} />
             
             <div className="flex-1 min-h-[300px] bg-[#0A0A0A] border border-[#222] rounded-2xl overflow-hidden flex flex-col">
               <div className="px-6 py-4 border-b border-[#222] flex justify-between items-center bg-[#050505]">
@@ -62,7 +62,7 @@ export default function EnrichmentPanel({ item }: EnrichmentPanelProps) {
                 <span className="text-xs uppercase tracking-widest text-[#888] font-sans">golden_record.json</span>
               </div>
               <div className="p-6 overflow-auto flex-1">
-                <pre className="text-sm text-[#A1A1AA] font-mono leading-relaxed">
+                <pre className="text-sm text-[#A1A1AA] font-mono leading-relaxed whitespace-pre-wrap break-words">
                   <span className="text-pink-400">{`{`}</span>{"\n"}
                   <span className="text-blue-400">  &quot;status&quot;</span>: <span className="text-green-400">&quot;Verified&quot;</span>,{"\n"}
                   <span className="text-blue-400">  &quot;data&quot;</span>: {JSON.stringify(item.goldenRecord, null, 4).replace(/^{/, '').replace(/}$/, '')}

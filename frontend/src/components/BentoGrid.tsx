@@ -3,8 +3,9 @@ import { Zap, ShieldCheck, FileText, BarChart3, ChevronRight } from "lucide-reac
 import { motion, Variants } from "framer-motion";
 
 interface BentoGridProps {
-  goldenRecord?: any;
+  goldenRecord?: Record<string, unknown>;
   speed?: string;
+  compact?: boolean;
 }
 
 const defaultItems = [
@@ -56,15 +57,15 @@ const itemVariants: Variants = {
   }
 };
 
-export default function BentoGrid({ goldenRecord, speed }: BentoGridProps) {
+export default function BentoGrid({ goldenRecord, speed, compact = false }: BentoGridProps) {
   
   const bentoItems = goldenRecord ? [
     {
       title: "Triangulation Status",
       description: "Cross-referencing URL, PDF, and DB.",
       icon: <ShieldCheck className="w-5 h-5 text-white" />,
-      colSpan: "col-span-1 md:col-span-2",
-      value: goldenRecord.triangulation_status || "Verified Match",
+      colSpan: compact ? "col-span-1 sm:col-span-2" : "col-span-1 md:col-span-2",
+      value: (goldenRecord.triangulation_status as string) || "Verified Match",
     },
     {
       title: "Extraction Speed",
@@ -84,7 +85,7 @@ export default function BentoGrid({ goldenRecord, speed }: BentoGridProps) {
       title: "AI Confidence Score",
       description: "Self-evaluated extraction precision.",
       icon: <BarChart3 className="w-5 h-5 text-white" />,
-      colSpan: "col-span-1 md:col-span-2",
+      colSpan: compact ? "col-span-1 sm:col-span-2" : "col-span-1 md:col-span-2",
       value: `${goldenRecord.confidence_score}%` || "0%",
     },
   ] : defaultItems;
@@ -114,7 +115,7 @@ export default function BentoGrid({ goldenRecord, speed }: BentoGridProps) {
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, margin: "-100px" }}
-        className="grid grid-cols-1 md:grid-cols-3 gap-4"
+        className={`grid gap-4 ${compact ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1 md:grid-cols-3'}`}
       >
         {bentoItems.map((item, i) => (
           <motion.div

@@ -36,8 +36,8 @@ export default function Cursor() {
         innerDotRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
       }
 
-      ringX += (mouseX - ringX) * 0.5;
-      ringY += (mouseY - ringY) * 0.5;
+      ringX += (mouseX - ringX) * 0.9;
+      ringY += (mouseY - ringY) * 0.9;
 
       if (outerRingRef.current) {
         outerRingRef.current.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;

@@ -122,7 +122,7 @@ export default function BentoGrid({ goldenRecord, speed, compact = false }: Bent
             key={i}
             variants={itemVariants}
             whileHover={{ scale: 1.02 }}
-            className={`p-6 rounded-2xl border border-[#222] bg-black/40 backdrop-blur-xl transition-all duration-300 relative overflow-hidden group hover:bg-white/5 hover:border-[#444] ${item.colSpan}`}
+            className={`p-6 rounded-2xl border border-[#222] bg-black/40 backdrop-blur-xl transition-all duration-300 relative overflow-hidden group hover:bg-white/5 hover:border-[#444] flex flex-col justify-between min-h-[160px] ${item.colSpan}`}
           >
             <div className="flex items-start justify-between mb-4 relative z-10">
               <div className="p-3 bg-black rounded-full border border-[#333]">
@@ -130,8 +130,8 @@ export default function BentoGrid({ goldenRecord, speed, compact = false }: Bent
               </div>
             </div>
             
-            <div className="relative z-10 flex flex-col h-full justify-end">
-              <p className={`font-mono tracking-tighter mb-2 text-white truncate ${String(item.value).length > 8 ? 'text-2xl' : 'text-4xl md:text-5xl'}`}>
+            <div className="relative z-10 mt-auto">
+              <p className={`font-mono tracking-tighter mb-1 text-white truncate ${String(item.value).length > 12 ? 'text-xl' : String(item.value).length > 8 ? 'text-2xl' : 'text-4xl md:text-5xl'}`}>
                 {item.value}
               </p>
               <h3 className="text-[10px] uppercase tracking-widest font-sans text-[#888]">{item.title}</h3>

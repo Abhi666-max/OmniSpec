@@ -15,7 +15,17 @@ body {
   background: var(--background);
 }
 
-/* Force custom cursor everywhere */
-* {
+/* Force custom cursor everywhere - Brutal mode */
+*, *::before, *::after, html, body {
+  cursor: none !important;
+}
+
+/* Prevent text selection beam */
+input, textarea {
+  cursor: none !important;
+}
+
+/* Ensure Links and Buttons don't show pointer */
+a, button, [role="button"] {
   cursor: none !important;
 }

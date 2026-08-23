@@ -7,7 +7,7 @@ export interface CatalogItem {
   name: string;
   source_type: "PDF" | "URL";
   source_url: string;
-  status: "Pending" | "Processing" | "Enriched";
+  status: "Pending" | "Processing" | "Enriched" | "Needs Review" | "Approved";
   goldenRecord?: Record<string, unknown>;
   speed?: string;
 }
@@ -76,6 +76,18 @@ export default function CatalogTable({ items, onItemClick, selectedId }: Catalog
                         <>
                           <CheckCircle2 className="w-4 h-4 text-green-500" />
                           <span className="text-green-500 font-medium">Verified Record</span>
+                        </>
+                      )}
+                      {item.status === "Needs Review" && (
+                        <>
+                          <CircleDashed className="w-4 h-4 text-yellow-500" />
+                          <span className="text-yellow-500 font-medium">Needs Review</span>
+                        </>
+                      )}
+                      {item.status === "Approved" && (
+                        <>
+                          <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                          <span className="text-emerald-500 font-medium">Approved</span>
                         </>
                       )}
                     </div>

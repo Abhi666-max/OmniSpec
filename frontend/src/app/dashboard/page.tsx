@@ -8,7 +8,7 @@ import EnrichmentPanel from "@/components/EnrichmentPanel";
 import Dropzone from "@/components/Dropzone";
 import BentoGrid from "@/components/BentoGrid";
 import { useState } from "react";
-import { Play } from "lucide-react";
+import { Play, Download } from "lucide-react";
 
 const initialCatalog: CatalogItem[] = [
   { id: "1", name: "Centrifugal Water Pump CX-500", source_type: "URL", source_url: "supplier-a.com/cx-500", status: "Pending" },
@@ -28,6 +28,25 @@ export default function Dashboard() {
   const [speed, setSpeed] = useState<string>("0s");
 
   const [isEnriching, setIsEnriching] = useState(false);
+
+  const exportToCSV = () => {
+    const headers = ["SKU ID", "Product Name", "Source", "Status", "Taxonomy", "Confidence Score"];
+    const rows = catalog.map(item => {
+      const taxonomy = item.goldenRecord?.taxonomy_unspsc as string || "N/A";
+      const conf = item.goldenRecord?.confidence_score as string || "N/A";
+      return [item.id, item.name, item.source_type, item.status, taxonomy, conf]
+        .map(v => `"${v}"`).join(",");
+    });
+    
+    const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows].join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "omnispec_shopify_export.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const handleBulkEnrichment = async () => {
     setIsEnriching(true);
@@ -51,10 +70,13 @@ export default function Dashboard() {
         });
         const data = await res.json();
 
-        // 3. Set status to Enriched with Golden Record
+        // 3. Set status based on HITL logic
+        const confidence = parseFloat(data.golden_record?.confidence_score) || 100;
+        const newStatus = confidence < 95 ? "Needs Review" : "Approved";
+
         const enrichedItem: CatalogItem = {
           ...catalog[i],
-          status: "Enriched",
+          status: newStatus,
           goldenRecord: data.golden_record,
           speed: data.extraction_speed,
         };
@@ -74,6 +96,13 @@ export default function Dashboard() {
     }
 
     setIsEnriching(false);
+  };
+
+  const handleApprove = (id: string) => {
+    setCatalog(prev => prev.map(item => 
+      item.id === id ? { ...item, status: "Approved" } : item
+    ));
+    setSelectedItem(prev => prev?.id === id ? { ...prev, status: "Approved" } : prev);
   };
 
   return (
@@ -104,18 +133,28 @@ export default function Dashboard() {
                 <p className="text-sm font-sans text-[#888] mt-2">Manage and enrich your raw supplier data into Golden Records.</p>
               </div>
 
-              <button
-                onClick={handleBulkEnrichment}
-                disabled={isEnriching}
-                className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full font-sans font-medium text-sm hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100"
-              >
-                {isEnriching ? (
-                  <div className="w-4 h-4 border-2 border-black/20 border-t-black rounded-full animate-spin" />
-                ) : (
-                  <Play className="w-4 h-4 fill-black" />
-                )}
-                Run Bulk Enrichment
-              </button>
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={exportToCSV}
+                  className="flex items-center gap-2 border border-[#333] text-white px-6 py-3 rounded-full font-sans font-medium text-sm hover:bg-white/5 transition-colors"
+                >
+                  <Download className="w-4 h-4 text-[#888]" />
+                  Export CSV
+                </button>
+
+                <button
+                  onClick={handleBulkEnrichment}
+                  disabled={isEnriching}
+                  className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full font-sans font-medium text-sm hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100"
+                >
+                  {isEnriching ? (
+                    <div className="w-4 h-4 border-2 border-black/20 border-t-black rounded-full animate-spin" />
+                  ) : (
+                    <Play className="w-4 h-4 fill-black" />
+                  )}
+                  Run Bulk Enrichment
+                </button>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 flex-1 min-h-0">
@@ -127,7 +166,7 @@ export default function Dashboard() {
                 />
               </div>
               <div className="lg:col-span-5 h-full overflow-hidden">
-                <EnrichmentPanel item={selectedItem} />
+                <EnrichmentPanel item={selectedItem} onApprove={handleApprove} />
               </div>
             </div>
           </div>

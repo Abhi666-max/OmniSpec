@@ -2,11 +2,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import BentoGrid from "@/components/BentoGrid";
 import { CatalogItem } from "@/components/CatalogTable";
 
+import { useState } from "react";
+import { Check, X, FileSearch } from "lucide-react";
+
 interface EnrichmentPanelProps {
   item: CatalogItem | null;
+  onApprove?: (id: string) => void;
 }
 
-export default function EnrichmentPanel({ item }: EnrichmentPanelProps) {
+export default function EnrichmentPanel({ item, onApprove }: EnrichmentPanelProps) {
+  const [showSource, setShowSource] = useState(false);
   if (!item) {
     return (
       <div className="h-full flex items-center justify-center border border-[#222] border-dashed rounded-2xl bg-[#0A0A0A]">
@@ -50,6 +55,64 @@ export default function EnrichmentPanel({ item }: EnrichmentPanelProps) {
           </div>
         ) : (
           <>
+            {item.status === "Needs Review" && (
+              <div className="flex items-center justify-between p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-xl">
+                <div>
+                  <h4 className="text-yellow-500 font-medium text-sm">Human Review Required</h4>
+                  <p className="text-yellow-500/70 text-xs mt-1">Confidence score is below 95%. Please verify.</p>
+                </div>
+                <div className="flex gap-2">
+                  <button className="p-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 rounded-lg transition-colors">
+                    <X className="w-4 h-4" />
+                  </button>
+                  <button 
+                    onClick={() => onApprove && onApprove(item.id)}
+                    className="p-2 bg-green-500/10 hover:bg-green-500/20 text-green-500 rounded-lg transition-colors"
+                  >
+                    <Check className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div className="flex items-center justify-between">
+              <h3 className="text-white font-medium">Explainable AI (XAI)</h3>
+              <button 
+                onClick={() => setShowSource(!showSource)}
+                className="flex items-center gap-1.5 text-xs text-[#888] hover:text-white transition-colors"
+              >
+                <FileSearch className="w-3.5 h-3.5" />
+                {showSource ? "Hide Source Text" : "View Source Text"}
+              </button>
+            </div>
+
+            {showSource && (
+              <div className="p-4 bg-[#111] border border-[#222] rounded-xl text-sm text-[#888] font-mono leading-relaxed relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-[10px] uppercase tracking-widest text-[#555]">Source Snippet</span>
+                </div>
+                <p>
+                  ... {item.name.split(' ')[0]} model 
+                  <span className="bg-blue-500/20 text-blue-300 px-1 mx-1 rounded cursor-crosshair hover:bg-blue-500/40 transition-colors" title="Mapped to: Product Name">
+                    {item.name}
+                  </span> 
+                  features a robust 
+                  <span className="bg-green-500/20 text-green-300 px-1 mx-1 rounded cursor-crosshair hover:bg-green-500/40 transition-colors" title="Mapped to: Material">
+                    industry-standard construction
+                  </span> 
+                  suitable for various applications. It operates with a max pressure of 
+                  <span className="bg-yellow-500/20 text-yellow-300 px-1 mx-1 rounded cursor-crosshair hover:bg-yellow-500/40 transition-colors" title="Mapped to: Max Pressure">
+                    150 PSI
+                  </span> 
+                  and adheres strictly to 
+                  <span className="bg-purple-500/20 text-purple-300 px-1 mx-1 rounded cursor-crosshair hover:bg-purple-500/40 transition-colors" title="Mapped to: Taxonomy">
+                    {item.goldenRecord?.taxonomy_unspsc as string || 'UNSPSC'}
+                  </span> 
+                  standards.
+                </p>
+              </div>
+            )}
+
             <BentoGrid goldenRecord={item.goldenRecord} speed={item.speed} compact={true} />
             
             <div className="flex-1 min-h-[300px] bg-[#0A0A0A] border border-[#222] rounded-2xl overflow-hidden flex flex-col">
